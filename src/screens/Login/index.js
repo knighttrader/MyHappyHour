@@ -3,6 +3,23 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Styles from './style';
 
 export default class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: '',
+      password: '',
+    };
+  }
+
+  handleChange(inputText, text) {
+    let state = this.state;
+
+    state[inputText] = text;
+
+    this.setState(state);
+  }
+
   _renderTitle() {
     return (
       <View style={Styles.title.container}>
@@ -13,7 +30,7 @@ export default class Login extends Component {
     );
   }
 
-  _renderInput(placeholder = '', isPassword = false) {
+  _renderInput(placeholder = '', isPassword = false, inputText) {
     return (
       <TextInput
         style={Styles.forms.input}
@@ -23,6 +40,7 @@ export default class Login extends Component {
         autoCorrect={false}
         secureTextEntry={isPassword}
         underlineColorAndroid={'transparent'}
+        onChangeText={text => this.handleChange(inputText, text)}
       />
     );
   }
@@ -30,8 +48,8 @@ export default class Login extends Component {
   _renderForms() {
     return (
       <View style={Styles.forms.container}>
-        {this._renderInput('USERNAME')}
-        {this._renderInput('PASSWORD', true)}
+        {this._renderInput('USERNAME', false, 'username')}
+        {this._renderInput('PASSWORD', true, 'password')}
       </View>
     );
   }
@@ -52,12 +70,16 @@ export default class Login extends Component {
     );
   }
 
+  handleSignIn() {
+    alert(JSON.stringify(this.state));
+  }
+
   _renderButtons() {
     return (
       <View style={Styles.buttons.container}>
-        {this._renderButton('SIGN IN', 'block', () => alert('SIGN IN Pressed'))}
+        {this._renderButton('SIGN IN', 'block', () => this.handleSignIn())}
         {this._renderButton('VIA FACEBOOK', 'general', () =>
-          alert('VIA FACEBOOK Pressed'),
+          this.handleSignIn(),
         )}
       </View>
     );
