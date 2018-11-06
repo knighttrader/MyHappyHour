@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
+import { LoginTitle, FormGroup, ButtonGroup } from '@components';
 import Styles from './style';
 
 export default class Login extends Component {
@@ -12,90 +13,27 @@ export default class Login extends Component {
     };
   }
 
-  handleChange(inputText, text) {
+  handleChange(inputName, text) {
     let state = this.state;
 
-    state[inputText] = text;
+    state[inputName] = text;
 
     this.setState(state);
-  }
-
-  _renderTitle() {
-    return (
-      <View style={Styles.title.container}>
-        <Text style={Styles.title.text}>
-          MY <Text style={Styles.title.boldText}>HAPPY</Text> HOUR
-        </Text>
-      </View>
-    );
-  }
-
-  _renderInput(placeholder = '', isPassword = false, inputText) {
-    return (
-      <TextInput
-        style={Styles.forms.input}
-        placeholder={placeholder}
-        placeholderTextColor={'yellow'}
-        autoCapitalize={'none'}
-        autoCorrect={false}
-        secureTextEntry={isPassword}
-        underlineColorAndroid={'transparent'}
-        onChangeText={text => this.handleChange(inputText, text)}
-      />
-    );
-  }
-
-  _renderForms() {
-    return (
-      <View style={Styles.forms.container}>
-        {this._renderInput('USERNAME', false, 'username')}
-        {this._renderInput('PASSWORD', true, 'password')}
-      </View>
-    );
-  }
-
-  _renderButton(title, type = 'general', onPress) {
-    const containerStyles = [Styles.buttons.innerContainer];
-
-    if (type === 'block') {
-      containerStyles.push(Styles.buttons.block.container);
-    } else {
-      containerStyles.push(Styles.buttons.general.container);
-    }
-
-    return (
-      <TouchableOpacity style={containerStyles} onPress={() => onPress()}>
-        <Text style={Styles.buttons[type].text}>{title}</Text>
-      </TouchableOpacity>
-    );
-  }
-
-  handleSignIn() {
-    alert(JSON.stringify(this.state));
-  }
-
-  _renderButtons() {
-    return (
-      <View style={Styles.buttons.container}>
-        {this._renderButton('SIGN IN', 'block', () => this.handleSignIn())}
-        {this._renderButton('VIA FACEBOOK', 'general', () =>
-          this.handleSignIn(),
-        )}
-      </View>
-    );
   }
 
   render() {
     return (
       <View style={Styles.container}>
         {/* === Title Section === */}
-        {this._renderTitle()}
+        <LoginTitle />
 
         {/* === Forms Section === */}
-        {this._renderForms()}
+        <FormGroup
+          onChangeText={(inputName, text) => this.handleChange(inputName, text)}
+        />
 
         {/* == Buttons Section == */}
-        {this._renderButtons()}
+        <ButtonGroup data={this.state} />
       </View>
     );
   }
